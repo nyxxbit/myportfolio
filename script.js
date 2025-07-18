@@ -429,71 +429,44 @@ class TranslationSystem {
             </div>
         `;
         
-        const style = document.createElement('style');
-        style.textContent = `
-            .language-selector {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                z-index: 1000;
-            }
-            
-            .language-toggle {
-                background: rgba(0, 255, 251, 0.1);
-                border: 1px solid rgba(0, 255, 251, 0.3);
-                border-radius: 8px;
-                padding: 8px 12px;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                color: var(--primary-color);
-                font-size: 0.9rem;
-                transition: all 0.3s ease;
-                position: relative;
-            }
-            
-            .language-toggle:hover {
-                background: rgba(0, 255, 251, 0.2);
-            }
-            
-            .language-dropdown {
-                position: absolute;
-                top: 100%;
-                right: 0;
-                background: var(--dark-bg);
-                border: 1px solid rgba(0, 255, 251, 0.3);
-                border-radius: 8px;
-                min-width: 150px;
-                opacity: 0;
-                visibility: hidden;
-                transform: translateY(-10px);
-                transition: all 0.3s ease;
-                margin-top: 5px;
-            }
-            
-            .language-toggle:hover .language-dropdown {
-                opacity: 1;
-                visibility: visible;
-                transform: translateY(0);
-            }
-            
-            .language-option {
-                padding: 10px 15px;
-                cursor: pointer;
-                transition: background 0.2s ease;
-            }
-            
-            .language-option:hover {
-                background: rgba(0, 255, 251, 0.1);
-            }
-        `;
-        document.head.appendChild(style);
+        // Eventos de mouse para melhor controle
+        const toggle = languageSelector.querySelector('.language-toggle');
+        const dropdown = languageSelector.querySelector('.language-dropdown');
         
+        let hoverTimeout;
+        
+        // Mouse enter no toggle
+        toggle.addEventListener('mouseenter', () => {
+            clearTimeout(hoverTimeout);
+            dropdown.style.opacity = '1';
+            dropdown.style.visibility = 'visible';
+            dropdown.style.transform = 'translateY(0) scale(1)';
+        });
+        
+        // Mouse leave no container completo
+        languageSelector.addEventListener('mouseleave', () => {
+            hoverTimeout = setTimeout(() => {
+                dropdown.style.opacity = '0';
+                dropdown.style.visibility = 'hidden';
+                dropdown.style.transform = 'translateY(-10px) scale(0.95)';
+            }, 100);
+        });
+        
+        // Mouse enter no dropdown para manter aberto
+        dropdown.addEventListener('mouseenter', () => {
+            clearTimeout(hoverTimeout);
+        });
+        
+        // Click nos idiomas
         languageSelector.addEventListener('click', (e) => {
             if (e.target.classList.contains('language-option')) {
                 const newLang = e.target.getAttribute('data-lang');
                 this.changeLanguage(newLang);
+                
+                // Fechar dropdown após seleção
+                dropdown.style.opacity = '0';
+                dropdown.style.visibility = 'hidden';
+                dropdown.style.transform = 'translateY(-10px) scale(0.95)';
             }
         });
         
