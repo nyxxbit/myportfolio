@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debug - Portfolio Status</title>
+    <style>
+      body {
+        font-family: 'Courier New', monospace;
+        background: #0d1117;
+        color: #00fffb;
+        padding: 20px;
+        line-height: 1.6;
+      }
+      .status {
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 10px 0;
+      }
+      .success {
+        border-color: #238636;
+      }
+      .error {
+        border-color: #da3633;
+      }
+      .warning {
+        border-color: #f85149;
+      }
+      pre {
+        background: #010409;
+        padding: 10px;
+        border-radius: 4px;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🔍 Portfolio Debug Status</h1>
+
+    <div class="status" id="file-status">
+      <h2>📁 Arquivos</h2>
+      <div id="file-checks"></div>
+    </div>
+
+    <div class="status" id="script-status">
+      <h2>📜 Scripts</h2>
+      <div id="script-checks"></div>
+    </div>
+
+    <div class="status" id="css-status">
+      <h2>🎨 CSS</h2>
+      <div id="css-checks"></div>
+    </div>
+
+    <div class="status">
+      <h2>🌐 Links de Acesso</h2>
+      <p>
+        <a href="index.html" style="color: #00fffb">🏠 Portfólio Principal</a>
+        <br />
+        <a href="404.html" style="color: #00fffb">❌ Página 404</a>
+        <br />
+      </p>
+    </div>
+
+    <script>
+      console.log('🚀 Debug script iniciado');
+
+      function checkFile(url, callback) {
+        fetch(url)
+          .then(response => {
+            callback(response.ok, response.status);
+          })
+          .catch(error => {
+            callback(false, 'Network Error');
+          });
+      }
+
+      function updateStatus(elementId, success, message) {
+        const element = document.getElementById(elementId);
+        const status = success ? '✅' : '❌';
+        const className = success ? 'success' : 'error';
+        element.className = `status ${className}`;
+        element.querySelector('div').innerHTML += `<p>${status} ${message}</p>`;
+      }
+
+      // Check files
+      const filesToCheck = [
+        { url: 'index.html', name: 'index.html' },
+        { url: 'styles.css', name: 'styles.css' },
+        { url: 'script.js', name: 'script.js' },
+        { url: '404.html', name: '404.html' }
+      ];
+
+      filesToCheck.forEach(file => {
+        checkFile(file.url, (success, status) => {
+          updateStatus('file-status', success, `${file.name}: ${status}`);
+        });
+      });
+
+      // Check if CSS is loading
+      setTimeout(() => {
+        const css = window.getComputedStyle(document.body);
+        const bgColor = css.backgroundColor;
+        updateStatus('css-status', bgColor !== 'rgba(0, 0, 0, 0)', `Background color: ${bgColor}`);
+      }, 1000);
+
+      // Check JavaScript
+      setTimeout(() => {
+        updateStatus('script-status', typeof console === 'object', 'Console available');
+        updateStatus('script-status', typeof fetch === 'function', 'Fetch API available');
+      }, 500);
+
+      console.log('✅ Debug completado');
+    </script>
+  </body>
+</html>

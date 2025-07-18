@@ -1,0 +1,45 @@
+{
+  "name": "gabriel-barretta-portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio profissional de Gabriel Bertolassi Barretta - CEO da Ruby Verse LTDA",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "install-deps": "npm install",
+    "serve": "node server.js",
+    "admin": "npm run start"
+  },
+  "keywords": [
+    "portfolio",
+    "backend",
+    "developer",
+    "ceo",
+    "ruby-verse",
+    "gabriel-barretta"
+  ],
+  "author": {
+    "name": "Gabriel Bertolassi Barretta",
+    "email": "contato@rubyverse.store",
+    "url": "https://rubyverse.com.br"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nyxxbit/portfolio"
+  },
+  "homepage": "http://localhost:80",
+  "bugs": {
+    "email": "contato@rubyverse.store"
+  }
+}
